@@ -49,7 +49,7 @@ namespace AdventOfCode2023.day1
 
         public static async Task PartTwo()
         {
-            var input = await Util.GetInput("day1", 2);
+            var input = await Util.GetInput("day1", 0);
 
             int result = 0;
 
@@ -96,11 +96,39 @@ namespace AdventOfCode2023.day1
                     
                     
                 }
-                //Console.WriteLine($"   - hittade nummer: first: {firstDigit} last: {lastDigit}");
-                //break;
+
                 // if there was only one number
                 if (lastDigit == null)
                     lastDigit = firstDigit;
+
+                // Fixa bugg på t.ex. "dnrrfklrpxstln57vqzkrxlqnmsvmgdbthreeoneightc" i slutet där det bör sluta på 8
+                stringNumber = "";
+                for (var i = line.Length-1; i >= 0; i--)
+                {
+                    stringNumber = line[i] + stringNumber;
+
+                    int? foundNumber = GetStringNumber(stringNumber);
+
+                    var isDigit = Int32.TryParse(line[i].ToString(), out int digit);
+                    if (isDigit)
+                    {
+                        foundNumber = digit;
+                    }
+
+                    
+                    if (foundNumber != null)
+                    {
+                        if (lastDigit != foundNumber)
+                            lastDigit = foundNumber;
+                        //Console.WriteLine(foundNumber);
+                        break;
+                    }
+                }
+
+
+                //Console.WriteLine($"   - hittade nummer: first: {firstDigit} last: {lastDigit}");
+                //break;
+                
 
                 int number = int.Parse(firstDigit.ToString() + lastDigit.ToString());
 
