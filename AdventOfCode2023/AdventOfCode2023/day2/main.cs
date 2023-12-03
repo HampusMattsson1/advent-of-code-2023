@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -24,29 +25,35 @@ namespace AdventOfCode2023.day2
             {
                 Console.WriteLine(line);
 
-                // regex test to get data more easily
-                string pattern = @"(Game \d+: ).*";
+                int maxFoundRed = 0;
+                int maxFoundGreen = 0;
+                int maxFoundBlue = 0;
 
-                Regex regex = new Regex(pattern);
+                // Split line
+                Regex regex = new Regex(@"(Game \d+: ).*");
                 Match match = regex.Match(line);
-
-                if (match.Success)
+                if (!match.Success)
                 {
-
-                    string[] matchArray = new string[match.Groups.Count];
-                    for (int i = 0; i < match.Groups.Count; i++)
-                    {
-                        Console.WriteLine("match: " + match.Groups[i].Value);
-                    }
-
+                    Console.WriteLine("No match found for regular expression");
                 }
 
-                var regexArray = Regex.Split(line, pattern);
-                Console.WriteLine(regexArray);
+                var game = match.Groups[1].Value;
+                var gameString = line.Split(game)[1];
+                Console.WriteLine(gameString);
 
-                foreach (var i in regexArray)
+                string[] reveals = gameString.Split("; ");
+
+                foreach (var reveal in reveals)
                 {
-                    Console.WriteLine("i: " + i);
+                    Console.WriteLine("reveal: "+reveal);
+
+                    string[] revealColors = reveal.Split(", ");
+
+                    foreach (var revealColor in revealColors)
+                    {
+                        Console.WriteLine("reveal colors: [" + revealColor + "]");
+                    }
+
                 }
 
                 break;
