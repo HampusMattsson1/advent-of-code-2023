@@ -13,8 +13,10 @@ namespace AdventOfCode2023.day2
     {
         public static async Task PartOne()
         {
-            var input = await Util.GetInput("day2", 1);
+            var input = await Util.GetInput("day2");
 
+            int validGames = 0;
+            var validGameIds = new List<int>();
             int result = 0;
 
             int maxRed = 12;
@@ -23,7 +25,7 @@ namespace AdventOfCode2023.day2
 
             foreach (var line in input)
             {
-                Console.WriteLine(line);
+                //Console.WriteLine(line);
 
                 var colorDictionary = new Dictionary<string, int>()
                 {
@@ -32,11 +34,11 @@ namespace AdventOfCode2023.day2
                     { "blue", 0 }
                 };
 
-                Console.WriteLine("colorDictionary before");
-                foreach (var key in colorDictionary)
-                {
-                    Console.WriteLine(key);
-                }
+                //Console.WriteLine("colorDictionary before");
+                //foreach (var key in colorDictionary)
+                //{
+                //    Console.WriteLine(key);
+                //}
 
                 // Split line
                 Regex regex = new Regex(@"(Game \d+: ).*");
@@ -47,44 +49,66 @@ namespace AdventOfCode2023.day2
                 }
 
                 var game = match.Groups[1].Value;
+                //Console.WriteLine("GAME: " + game);
+                var gameId = int.Parse(new Regex(@"(\d+)").Match(game).Groups[1].Value);
+                //Console.WriteLine("gameid: " + gameId);
+
                 var gameString = line.Split(game)[1];
-                Console.WriteLine(gameString);
+                //Console.WriteLine(gameString);
 
                 string[] reveals = gameString.Split("; ");
 
                 foreach (var reveal in reveals)
                 {
-                    Console.WriteLine("reveal: "+reveal);
+                    //Console.WriteLine("reveal: "+reveal);
 
                     string[] revealColors = reveal.Split(", ");
 
                     foreach (var revealColorString in revealColors)
                     {
-                        Console.WriteLine("reveal colors: [" + revealColorString + "]");
+                        //Console.WriteLine("reveal colors: [" + revealColorString + "]");
 
-                        string revealAmount = revealColorString.Split(" ")[0];
+                        int revealAmount = int.Parse(revealColorString.Split(" ")[0]);
                         string revealColor = revealColorString.Split(" ")[1];
 
-                        colorDictionary[revealColor] = int.Parse(revealAmount);
+                        // If the value is larger than the already found largest
+                        if (colorDictionary[revealColor] < revealAmount)
+                            colorDictionary[revealColor] = revealAmount;
                     }
 
                 }
 
-                Console.WriteLine("colorDictionary after");
-                foreach (var key in colorDictionary)
+                //Console.WriteLine("colorDictionary after");
+                //foreach (var key in colorDictionary)
+                //{
+                //    Console.WriteLine(key);
+                //}
+
+                // Check validity
+                bool valid = false;
+
+                if (colorDictionary["red"] <= maxRed && colorDictionary["green"] <= maxGreen && colorDictionary["blue"] <= maxBlue)
                 {
-                    Console.WriteLine(key);
+                    valid = true;
+                    validGames++;
+                    validGameIds.Add(gameId);
                 }
 
-                break;
+                //Console.BackgroundColor = ConsoleColor.Blue;
+                //Console.WriteLine("Valid: " + valid);
+                //Console.ResetColor();
+
+                //break;
             }
 
-            Console.WriteLine("day2 part one result: " + result);
-        }
+            int sumOfValidGameIds = 0;
+            foreach (var id in validGameIds)
+            {
+                sumOfValidGameIds += id;
+            }
+            //validGameIds.Select(i => sumOfValidGameIds += i);
 
-        private static void GetColorValue(string input)
-        {
-
+            Console.WriteLine("day2 part one result: " + sumOfValidGameIds);
         }
     }
 }
