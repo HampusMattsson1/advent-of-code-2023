@@ -6,4 +6,5 @@ using AdventOfCode2023.day2;
 
 //await day1.PartOne();
 //await day1.PartTwo();
-await day2.PartOne();
+//await day2.PartOne();
+await day2.PartTwo();

@@ -110,5 +110,74 @@ namespace AdventOfCode2023.day2
 
             Console.WriteLine("day2 part one result: " + sumOfValidGameIds);
         }
+
+        public static async Task PartTwo()
+        {
+            var input = await Util.GetInput("day2");
+
+            int result = 0;
+
+            foreach (var line in input)
+            {
+                //Console.WriteLine(line);
+
+                var colorDictionary = new Dictionary<string, int>()
+                {
+                    { "red", 0 },
+                    { "green", 0 },
+                    { "blue", 0 }
+                };
+
+                Regex regex = new Regex(@"(Game \d+: ).*");
+                Match match = regex.Match(line);
+                if (!match.Success)
+                {
+                    Console.WriteLine("No match found for regular expression");
+                }
+
+                var game = match.Groups[1].Value;
+                //Console.WriteLine("GAME: " + game);
+                var gameId = int.Parse(new Regex(@"(\d+)").Match(game).Groups[1].Value);
+                //Console.WriteLine("gameid: " + gameId);
+
+                var gameString = line.Split(game)[1];
+                //Console.WriteLine(gameString);
+
+                string[] reveals = gameString.Split("; ");
+
+                foreach (var reveal in reveals)
+                {
+                    //Console.WriteLine("reveal: " + reveal);
+
+                    string[] revealColors = reveal.Split(", ");
+
+                    foreach (var revealColorString in revealColors)
+                    {
+                        //Console.WriteLine("reveal colors: [" + revealColorString + "]");
+
+                        int revealAmount = int.Parse(revealColorString.Split(" ")[0]);
+                        string revealColor = revealColorString.Split(" ")[1];
+
+                        // Update minimum if value is higher
+                        if (colorDictionary[revealColor] < revealAmount)
+                            colorDictionary[revealColor] = revealAmount;
+                    }
+                }
+
+                int powerCount = 1;
+                //Console.WriteLine("colorDictionary after");
+                foreach (var key in colorDictionary)
+                {
+                    //Console.WriteLine(key);
+                    powerCount = powerCount * key.Value;
+                }
+
+                result += powerCount;
+
+                //Console.WriteLine("powercount: " + powerCount);
+            }
+
+            Console.WriteLine("day2 part two result: " + result);
+        }
     }
 }
