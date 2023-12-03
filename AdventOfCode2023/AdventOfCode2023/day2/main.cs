@@ -25,9 +25,18 @@ namespace AdventOfCode2023.day2
             {
                 Console.WriteLine(line);
 
-                int maxFoundRed = 0;
-                int maxFoundGreen = 0;
-                int maxFoundBlue = 0;
+                var colorDictionary = new Dictionary<string, int>()
+                {
+                    { "red", 0 },
+                    { "green", 0 },
+                    { "blue", 0 }
+                };
+
+                Console.WriteLine("colorDictionary before");
+                foreach (var key in colorDictionary)
+                {
+                    Console.WriteLine(key);
+                }
 
                 // Split line
                 Regex regex = new Regex(@"(Game \d+: ).*");
@@ -49,17 +58,33 @@ namespace AdventOfCode2023.day2
 
                     string[] revealColors = reveal.Split(", ");
 
-                    foreach (var revealColor in revealColors)
+                    foreach (var revealColorString in revealColors)
                     {
-                        Console.WriteLine("reveal colors: [" + revealColor + "]");
+                        Console.WriteLine("reveal colors: [" + revealColorString + "]");
+
+                        string revealAmount = revealColorString.Split(" ")[0];
+                        string revealColor = revealColorString.Split(" ")[1];
+
+                        colorDictionary[revealColor] = int.Parse(revealAmount);
                     }
 
+                }
+
+                Console.WriteLine("colorDictionary after");
+                foreach (var key in colorDictionary)
+                {
+                    Console.WriteLine(key);
                 }
 
                 break;
             }
 
             Console.WriteLine("day2 part one result: " + result);
+        }
+
+        private static void GetColorValue(string input)
+        {
+
         }
     }
 }
