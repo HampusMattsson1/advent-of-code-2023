@@ -24,6 +24,7 @@ namespace AdventOfCode2023.day3
             for (int i = 0; i < input.Length; i++)
             {
                 string line = input[i];
+                Console.WriteLine(line);
 
                 if (i != 0)
                     previousLine = input[i-1];
@@ -33,15 +34,29 @@ namespace AdventOfCode2023.day3
 
                 var numbers = new List<int>();
 
-                var regex = new Regex(@"(\d+)").Matches(line);
+                var lineNumbers = new Regex(@"(\d+)").Matches(line);
 
                 //Console.WriteLine(regex.Count.ToString());
-                foreach (Match match in regex)
+                foreach (Match foundNumber in lineNumbers)
                 {
-                    Console.WriteLine($"Number: {match.Value} at Position: {match.Index}");
+                    Console.WriteLine($"Number: {foundNumber.Value} at Position: {foundNumber.Index} with Length: {foundNumber.Length}");
+                    int leftIndexCheck = foundNumber.Index - 1;
+                    int rightIndexCheck = foundNumber.Index + foundNumber.Length;
+
+                    // what counts as a symbol
+
+                    
+                    // check this line
+
+
+                    // check previous line
+
+
+                    // check next line
+
+
                 }
 
-                Console.WriteLine(input[i]);
                 break;
             }
 
