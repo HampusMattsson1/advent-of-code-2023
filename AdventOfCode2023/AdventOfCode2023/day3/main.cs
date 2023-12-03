@@ -15,7 +15,7 @@ namespace AdventOfCode2023.day3
         {
             var input = await Util.GetInput("day3", 2);
 
-            //var validNumbers = new List<int>();
+            var validNumbers = new List<int>();
 
             string? previousLine = null;
             string? nextLine = null;
@@ -54,14 +54,39 @@ namespace AdventOfCode2023.day3
                     if (rightIndexCheck < line.Length)
                         charsToValidate.Add(line[rightIndexCheck]);
 
-                    // check previous line
+                    // check previous line & next line
+                    for (int j = leftIndexCheck; j <= rightIndexCheck; j++)
+                    {
 
+                        if (previousLine != null)
+                        {
+                            if (0 <= j && j < previousLine.Length)
+                                charsToValidate.Add(previousLine[j]);
+                        }
 
-                    // check next line
+                        if (nextLine != null)
+                        {
+                            if (0 <= j && j < nextLine.Length)
+                                charsToValidate.Add(nextLine[j]);
+                        }
+                        
+                    }
 
+                    Console.WriteLine("leftIndexCheck: " + leftIndexCheck);
+                    Console.WriteLine("rightIndexCheck: " + rightIndexCheck);
+
+                    foreach (var toValidate in charsToValidate)
+                    {
+                        Console.WriteLine(toValidate.ToString());
+                        if (IsSymbol(toValidate))
+                        {
+                            validNumbers.Add(int.Parse(foundNumber.Value));
+                        }
+                    }
 
                 }
 
+                Console.WriteLine("valid numbers: "+validNumbers.Count);
                 break;
             }
 
@@ -83,9 +108,9 @@ namespace AdventOfCode2023.day3
             bool isNumber = int.TryParse(input.ToString(), out int result);
 
             if (isNumber)
-                return true;
+                return false;
 
-            return false;
+            return true;
         }
     }
 }
