@@ -43,11 +43,16 @@ namespace AdventOfCode2023.day3
                     int leftIndexCheck = foundNumber.Index - 1;
                     int rightIndexCheck = foundNumber.Index + foundNumber.Length;
 
-                    // what counts as a symbol
+                    var charsToValidate = new List<char>();
 
-                    
+                    bool valid = false;
+
                     // check this line
+                    if (leftIndexCheck > 0)
+                        charsToValidate.Add(line[leftIndexCheck]);
 
+                    if (rightIndexCheck < line.Length)
+                        charsToValidate.Add(line[rightIndexCheck]);
 
                     // check previous line
 
@@ -68,6 +73,19 @@ namespace AdventOfCode2023.day3
             //}
 
             //Console.WriteLine("day3 part one result: ");
+        }
+
+        private static bool IsSymbol(char input)
+        {
+            if (input == '.')
+                return false;
+
+            bool isNumber = int.TryParse(input.ToString(), out int result);
+
+            if (isNumber)
+                return true;
+
+            return false;
         }
     }
 }
