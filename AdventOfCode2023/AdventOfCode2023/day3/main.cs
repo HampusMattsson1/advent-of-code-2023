@@ -13,14 +13,46 @@ namespace AdventOfCode2023.day3
     {
         public static async Task PartOne()
         {
-            var input = await Util.GetInput("day3", 1);
+            var input = await Util.GetInput("day3", 2);
 
-            foreach (var line in input)
+            //var validNumbers = new List<int>();
+
+            string? previousLine = null;
+            string? nextLine = null;
+
+            // each line
+            for (int i = 0; i < input.Length; i++)
             {
-                Console.WriteLine(line);
+                string line = input[i];
+
+                if (i != 0)
+                    previousLine = input[i-1];
+
+                if (i+1 != input.Length)
+                    nextLine = input[i+1];
+
+                var numbers = new List<int>();
+
+                var regex = new Regex(@"(\d+)").Matches(line);
+
+                //Console.WriteLine(regex.Count.ToString());
+                foreach (Match match in regex)
+                {
+                    Console.WriteLine($"Number: {match.Value} at Position: {match.Index}");
+                }
+
+                Console.WriteLine(input[i]);
+                break;
             }
 
-            Console.WriteLine("day3 part one result: ");
+            //foreach (var line in input)
+            //{
+            //    Console.WriteLine(line);
+
+            //    //string[] foundNumbers;
+            //}
+
+            //Console.WriteLine("day3 part one result: ");
         }
     }
 }
