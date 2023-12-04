@@ -13,16 +13,16 @@ namespace AdventOfCode2023.day4
     {
         public static async Task PartOne()
         {
-            var input = await Util.GetInput("day4", 2);
+            var input = await Util.GetInput("day4", 0);
 
             int pointSum = 0;
 
             foreach (var line in input)
             {
-                Console.WriteLine(line);
+                //Console.WriteLine(line);
 
-                string cardString = new Regex(@"(Card \d+: ).*").Match(line).Groups[1].Value;
-                Console.WriteLine($"{cardString}");
+                string cardString = new Regex(@"(Card\s+\d+: ).*").Match(line).Groups[1].Value;
+                //Console.WriteLine($"{cardString}");
                 string gameString = line.Split(cardString)[1];
 
                 //Console.WriteLine(cardString);
@@ -43,7 +43,7 @@ namespace AdventOfCode2023.day4
 
                 int currentPoints = 0;
 
-                Console.WriteLine($"playerNumbers.Count {playerNumbers.Length}");
+                //Console.WriteLine($"playerNumbers.Count {playerNumbers.Length}");
 
                 foreach (var playerNumber in playerNumbers)
                 {
