@@ -121,9 +121,7 @@ namespace AdventOfCode2023.day3
 
         public static async Task PartTwo()
         {
-            var input = await Util.GetInput("day3", 2);
-
-            var validNumbers = new List<int>();
+            var input = await Util.GetInput("day3", 0);
 
             var gearLocationList = new List<Tuple<int, int, List<int>>>();
 
@@ -155,10 +153,14 @@ namespace AdventOfCode2023.day3
 
                     // check this line
                     if (leftIndexCheck > 0)
-                        charsToValidate.Add(line[leftIndexCheck]);
+                    {
+                        CheckGearAndAddOrAppend(gearLocationList, line[leftIndexCheck], leftIndexCheck, i, foundNumber.Value);
+                    }
 
                     if (rightIndexCheck < line.Length)
-                        charsToValidate.Add(line[rightIndexCheck]);
+                    {
+                        CheckGearAndAddOrAppend(gearLocationList, line[rightIndexCheck], rightIndexCheck, i, foundNumber.Value);
+                    }
 
                     // check previous line & next line
                     for (int j = leftIndexCheck; j <= rightIndexCheck; j++)
@@ -166,59 +168,43 @@ namespace AdventOfCode2023.day3
                         if (previousLine != null)
                         {
                             if (0 <= j && j < previousLine.Length)
-                                charsToValidate.Add(previousLine[j]);
+                            {
+                                CheckGearAndAddOrAppend(gearLocationList, previousLine[j], j, i-1, foundNumber.Value);
+                            }
                         }
 
                         if (nextLine != null)
                         {
                             if (0 <= j && j < nextLine.Length)
-                                charsToValidate.Add(nextLine[j]);
+                            {
+                                CheckGearAndAddOrAppend(gearLocationList, nextLine[j], j, i+1, foundNumber.Value);
+                            }
                         }
                     }
 
                     //Console.WriteLine("leftIndexCheck: " + leftIndexCheck);
                     //Console.WriteLine("rightIndexCheck: " + rightIndexCheck);
-
-                    foreach (var toValidate in charsToValidate)
-                    {
-                        //Console.WriteLine(toValidate.ToString());
-                        if (IsSymbol(toValidate))
-                        {
-                            validNumbers.Add(int.Parse(foundNumber.Value));
-                        }
-
-                        if (IsGear(toValidate))
-                        {
-                            // check if gear exists
-                            //var a = gearLocationList.Any(g => g.Item1 == i && g.Item2 == j);
-
-
-                            gearLocationList.Add(new Tuple<int, int, List<int>>(2, 2, new List<int>() { int.Parse(foundNumber.Value) }));
-                        }
-                    }
-
                 }
-
-                Console.WriteLine("valid numbers: " + validNumbers.Count);
                 //break;
             }
 
-            //foreach (var line in input)
-            //{
-            //    Console.WriteLine(line);
-
-            //    //string[] foundNumbers;
-            //}
-
             int sum = 0;
 
-            // get the sum of all valid numbers
-            //foreach (var validNumber in validNumbers)
-            //{
-            //    sum += validNumber;
-            //}
+            foreach (var gear in  gearLocationList)
+            {
+                if (gear.Item3.Count == 2)
+                {
+                    sum += gear.Item3[0] * gear.Item3[1];
+                }
 
-            //Console.WriteLine("day3 part two result: " + sum);
+                //Console.WriteLine("-- gear: " + gear.Item1 + " " + gear.Item2);
+                //foreach (var number in gear.Item3)
+                //{
+                //    Console.WriteLine(number);
+                //}
+            }
+
+            Console.WriteLine("day3 part two result: " + sum);
         }
 
         private static bool IsGear(char c)
@@ -227,6 +213,22 @@ namespace AdventOfCode2023.day3
                 return true;
 
             return false;
+        }
+
+        private static void CheckGearAndAddOrAppend(List<Tuple<int, int, List<int>>> list, char c, int cordX, int cordY, string number)
+        {
+            if (IsGear(c))
+            {
+                // check if gear exists
+                var existingItem = list.FirstOrDefault(g => g.Item1 == cordX && g.Item2 == cordY);
+
+                if (existingItem != null)
+                {
+                    existingItem.Item3.Add(int.Parse(number));
+                }
+                else
+                    list.Add(new Tuple<int, int, List<int>>(cordX, cordY, new List<int>() { int.Parse(number) }));
+            }
         }
     }
 }
