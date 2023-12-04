@@ -99,19 +99,35 @@ namespace AdventOfCode2023.day4
 
                 int nestedScrapCardWins = GetScrapCardWins(input, lineIndex);
 
+                Console.WriteLine("nestedScrapCardWins: " + nestedScrapCardWins);
+
                 Console.WriteLine("GetScrapCardWins: " + GetScrapCardWins(input, lineIndex));
 
-                foreach (var winCard in  winCardIndexes)
-                {
-                    Console.WriteLine(winCard+1);
+                int wins = 0;
 
-                    // get all scrapcard wins for this line
-                    totalScratchCards++;
+                foreach (var playerNumber in playerNumbers)
+                {
+                    // if win
+                    if (winningNumbers.Contains(playerNumber))
+                    {
+                        wins++;
+                        totalScratchCards += GetScrapCardWins(input, lineIndex + wins);
+                    }
                 }
+
+                //foreach (var winCard in  winCardIndexes)
+                //{
+                //    Console.WriteLine(winCard+1);
+
+                //    // get all scrapcard wins for this line
+                //    totalScratchCards++;
+                //}
 
                 lineIndex++;
                 break;
             }
+
+            Console.WriteLine("totalScratchCards: " + totalScratchCards);
         }
 
         private static int GetScrapCardWins(string[] input, int lineIndex)
@@ -128,7 +144,7 @@ namespace AdventOfCode2023.day4
             int[] playerNumbers = new Regex(@"\d+").Matches(playerNumberString).Select(m => int.Parse(m.Value)).ToArray();
 
             int wins = 0;
-            int lineCount = 0;
+            int lineCount = lineIndex;
 
             foreach (var playerNumber in playerNumbers)
             {
@@ -138,8 +154,9 @@ namespace AdventOfCode2023.day4
                     // if it's not outside of the input
                     if ((lineIndex + wins) != input.Length)
                     {
-                        wins++;
-                        wins += GetScrapCardWins(input, lineIndex);
+                        //wins++;
+                        lineCount++;
+                        wins += GetScrapCardWins(input, lineCount);
                     }
                 }
             }
