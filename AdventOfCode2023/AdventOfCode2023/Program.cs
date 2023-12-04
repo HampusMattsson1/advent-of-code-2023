@@ -12,4 +12,5 @@ using AdventOfCode2023.day4;
 //await day2.PartTwo();
 //await day3.PartOne();
 //await day3.PartTwo();
-await day4.PartOne();
+//await day4.PartOne();
+await day4.PartTwo();
