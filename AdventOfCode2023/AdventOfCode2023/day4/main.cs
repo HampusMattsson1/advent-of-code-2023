@@ -13,12 +13,59 @@ namespace AdventOfCode2023.day4
     {
         public static async Task PartOne()
         {
-            var input = await Util.GetInput("day4", 1);
+            var input = await Util.GetInput("day4", 2);
+
+            int pointSum = 0;
 
             foreach (var line in input)
             {
                 Console.WriteLine(line);
+
+                string cardString = new Regex(@"(Card \d+: ).*").Match(line).Groups[1].Value;
+                Console.WriteLine($"{cardString}");
+                string gameString = line.Split(cardString)[1];
+
+                //Console.WriteLine(cardString);
+                //Console.WriteLine(gameString);
+
+                string winningNumberString = gameString.Split(" | ")[0];
+                string playerNumberString = gameString.Split(" | ")[1];
+
+                //Console.WriteLine(winningNumberString);
+                //Console.WriteLine("playernumberstring: " + playerNumberString);
+
+                int[] winningNumbers = new Regex(@"\d+").Matches(winningNumberString).Select(m => int.Parse(m.Value)).ToArray();
+                int[] playerNumbers = new Regex(@"\d+").Matches(playerNumberString).Select(m => int.Parse(m.Value)).ToArray();
+                //Console.WriteLine("HEJJJ: " + new Regex(@"\d+").Matches(playerNumberString).Count);
+                //Console.WriteLine("AAAA: " + new Regex(@"\d+").Matches(playerNumberString)[2].Value);
+                //Console.WriteLine(new Regex(@".*(\d+).*").Match(playerNumberString).Groups[1].Value);
+                //string[] playerNumbers = new Regex(@".*(\d+).*").Match(playerNumberString).Groups.Count;
+
+                int currentPoints = 0;
+
+                Console.WriteLine($"playerNumbers.Count {playerNumbers.Length}");
+
+                foreach (var playerNumber in playerNumbers)
+                {
+                    if (winningNumbers.Contains(playerNumber))
+                    {
+                        if (currentPoints == 0)
+                        {
+                            currentPoints = 1;
+                            continue;
+                        }
+
+                        currentPoints = currentPoints * 2;
+                    }
+                }
+
+                pointSum += currentPoints;
+
+
+                //break;
             }
+
+            Console.WriteLine("day4 part one result: " + pointSum);
         }
     }
 }
