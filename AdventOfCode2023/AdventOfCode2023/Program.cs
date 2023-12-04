@@ -9,4 +9,5 @@ using AdventOfCode2023.day3;
 //await day1.PartTwo();
 //await day2.PartOne();
 //await day2.PartTwo();
-await day3.PartOne();
+//await day3.PartOne();
+await day3.PartTwo();
