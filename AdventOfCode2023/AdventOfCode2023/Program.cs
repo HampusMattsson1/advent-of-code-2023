@@ -3,6 +3,7 @@ using AdventOfCode2023.day1;
 using AdventOfCode2023.day2;
 using AdventOfCode2023.day3;
 using AdventOfCode2023.day4;
+using AdventOfCode2023.day8;
 
 //Console.WriteLine("Hello, World!");
 
@@ -13,4 +14,5 @@ using AdventOfCode2023.day4;
 //await day3.PartOne();
 //await day3.PartTwo();
 //await day4.PartOne();
-await day4.PartTwo();
+//await day4.PartTwo();
+await day8.PartOne();
